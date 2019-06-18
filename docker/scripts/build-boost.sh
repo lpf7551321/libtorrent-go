@@ -2,11 +2,11 @@
 
 set -ex
 if [ ! -f "boost_${BOOST_VERSION_FILE}.tar.bz2" ]; then
-  wget -q https://dl.bintray.com/boostorg/release/${BOOST_VERSION}/source/boost_${BOOST_VERSION_FILE}.tar.bz2
+ curl -L http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_`echo ${BOOST_VERSION} | sed 's/\\./_/g'`.tar.bz2/download |tar xj
 fi
-echo "$BOOST_SHA256  boost_${BOOST_VERSION_FILE}.tar.bz2" | sha256sum -c -
-tar -xjf boost_${BOOST_VERSION_FILE}.tar.bz2
-rm boost_${BOOST_VERSION_FILE}.tar.bz2
+#echo "$BOOST_SHA256  boost_${BOOST_VERSION_FILE}.tar.bz2" | sha256sum -c -
+#tar -xjf boost_${BOOST_VERSION_FILE}.tar.bz2
+#rm boost_${BOOST_VERSION_FILE}.tar.bz2
 cd boost_${BOOST_VERSION_FILE}/
 ./bootstrap.sh --prefix=${CROSS_ROOT} ${BOOST_BOOTSTRAP_OPTS}
 echo "using ${BOOST_CC} : ${BOOST_OS} : ${CROSS_TRIPLE}-${BOOST_CXX} ${BOOST_FLAGS} ;" > ${HOME}/user-config.jam
